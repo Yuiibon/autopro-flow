@@ -1,11 +1,17 @@
+import { useState } from "react";
 import { demoInvoices, demoSales, demoInventory, demoCustomers } from "@/data/demoData";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Plus, Download } from "lucide-react";
+import { CreateInvoiceDialog } from "@/components/dialogs/CreateInvoiceDialog";
+import { downloadInvoice } from "@/utils/invoiceDownload";
+import { toast } from "sonner";
 
 export default function Invoices() {
+  const [dialogOpen, setDialogOpen] = useState(false);
+  
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'paid':
@@ -30,11 +36,13 @@ export default function Invoices() {
           <h1 className="text-3xl font-bold mb-2">Invoices</h1>
           <p className="text-muted-foreground">Manage invoices and payments</p>
         </div>
-        <Button className="gradient-primary">
+        <Button className="gradient-primary" onClick={() => setDialogOpen(true)}>
           <Plus className="h-4 w-4 mr-2" />
           Create Invoice
         </Button>
       </div>
+
+      <CreateInvoiceDialog open={dialogOpen} onOpenChange={setDialogOpen} />
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card>
@@ -102,7 +110,23 @@ export default function Invoices() {
                         </Badge>
                       </TableCell>
                       <TableCell className="text-right space-x-2">
-                        <Button variant="outline" size="sm">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => {
+                            downloadInvoice({
+                              id: invoice.id,
+                              customer: customer?.name || 'Unknown',
+                              vehicle: `${car?.make} ${car?.model}` || 'Unknown',
+                              amount: invoice.amount,
+                              tax: invoice.tax,
+                              total: invoice.total,
+                              status: invoice.status,
+                              date: invoice.issueDate
+                            });
+                            toast.success("Invoice downloaded!");
+                          }}
+                        >
                           <Download className="h-3 w-3 mr-1" />
                           PDF
                         </Button>

@@ -1,4 +1,4 @@
-import { LayoutDashboard, Car, Users, TrendingUp, FileText } from "lucide-react";
+import { LayoutDashboard, Car, Users, TrendingUp, FileText, Settings } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import {
   Sidebar,
@@ -18,6 +18,7 @@ const menuItems = [
   { title: "Customers", url: "/customers", icon: Users },
   { title: "Sales", url: "/sales", icon: TrendingUp },
   { title: "Invoices", url: "/invoices", icon: FileText },
+  { title: "Settings", url: "/settings", icon: Settings },
 ];
 
 export function AppSidebar() {

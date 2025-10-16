@@ -5,9 +5,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Plus, Mail, Phone, MapPin } from "lucide-react";
+import { AddCustomerDialog } from "@/components/dialogs/AddCustomerDialog";
 
 export default function Customers() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const filteredCustomers = demoCustomers.filter((customer) => {
     return (
@@ -24,11 +26,13 @@ export default function Customers() {
           <h1 className="text-3xl font-bold mb-2">Customers</h1>
           <p className="text-muted-foreground">Manage your customer database</p>
         </div>
-        <Button className="gradient-primary">
+        <Button className="gradient-primary" onClick={() => setDialogOpen(true)}>
           <Plus className="h-4 w-4 mr-2" />
           Add Customer
         </Button>
       </div>
+
+      <AddCustomerDialog open={dialogOpen} onOpenChange={setDialogOpen} />
 
       <div className="relative">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />

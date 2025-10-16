@@ -6,10 +6,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Search, Plus } from "lucide-react";
+import { AddVehicleDialog } from "@/components/dialogs/AddVehicleDialog";
 
 export default function Inventory() {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const filteredInventory = demoInventory.filter((car) => {
     const matchesSearch = 
@@ -42,11 +44,13 @@ export default function Inventory() {
           <h1 className="text-3xl font-bold mb-2">Inventory</h1>
           <p className="text-muted-foreground">Manage your vehicle inventory</p>
         </div>
-        <Button className="gradient-primary">
+        <Button className="gradient-primary" onClick={() => setDialogOpen(true)}>
           <Plus className="h-4 w-4 mr-2" />
           Add Vehicle
         </Button>
       </div>
+
+      <AddVehicleDialog open={dialogOpen} onOpenChange={setDialogOpen} />
 
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
